@@ -1,7 +1,6 @@
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoClients;
 import org.bson.Document;
-import scala.Tuple8;
 import scala.Tuple9;
 
 import java.math.BigDecimal;
@@ -24,7 +23,7 @@ public class MongoDBReceiver {
                                                 .append("games",
                                                         new Document("$exists", true))
                                                 .append("rank",
-                                                        new Document("$gt", 50))),
+                                                        new Document("$lte", 300))),
                                 new Document("$project",
                                         new Document("_id", 0L)
                                                 .append("sid", 1L)
@@ -54,7 +53,7 @@ public class MongoDBReceiver {
                         sid, rank, sname, d.getString("gid"), d.getInteger("kill"),
                         d.getInteger("death"), d.getInteger("assist"),
                         d.getInteger("wards"),
-                        new BigDecimal(d.getInteger("cs") * 60).divide(new BigDecimal(d.getInteger("length")),2,RoundingMode.HALF_UP).doubleValue())
+                        new BigDecimal(d.getInteger("cs") * 60).divide(new BigDecimal(d.getInteger("length")), 2, RoundingMode.HALF_UP).doubleValue())
                 );
             }
         }
