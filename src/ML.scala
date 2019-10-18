@@ -56,7 +56,7 @@ object ML extends Serializable {
       model = PipelineModel.load("model/games-kmeans-5-model")
     } else {
       println("Train new model")
-      val pca = new PCA().setInputCol("features").setOutputCol("pcaFeatures").setK(2)
+      val pca = new PCA().setInputCol("features").setOutputCol("pcaFeatures").setK(3)
       val km = new KMeans().setK(5).setSeed(1L).setFeaturesCol("pcaFeatures")
 
       val pipeline = new Pipeline().setStages(Array(pca, km))
