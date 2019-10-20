@@ -38,13 +38,14 @@ object ML extends Serializable {
 //          (g._1, Vectors.dense(pfm._1 / cnt, pfm._2 / cnt, pfm._3 / cnt, pfm._4 / cnt, pfm._5 / cnt))
 //        }
 
-      val altergRDD = sc.parallelize(games).map(g => (g.sid, (g.kill, g.death, g.assist, g.wards, g.csPerMin, 1)))
+      var altergRDD = sc.parallelize(games).map(g => (g.sid, (g.kill, g.death, g.assist, g.wards, g.csPerMin, 1)))
         .reduceByKey((a, b) => (a._1 + b._1, a._2 + b._2, a._3 + b._3, a._4 + b._4, a._5 + b._5, a._6 + b._6))
         .map { g =>
           val cnt = g._2._6.toDouble //game count
         val pfm = g._2 //performance tuple
           (g._1, Vectors.dense((pfm._1 + pfm._3) / pfm._2, pfm._4 / cnt, pfm._5 / cnt))
         }
+      altergRDD = altergRDD.++(sc.parallelize(Seq(("77777",Vectors.dense(2.345,2.0,6.9)))))
 //            println(gRDD.first())
 //      val garr: Array[(String, MLVector)] = gRDD.collect()
 //      val gseq: Seq[(String, MLVector)] = garr.toSeq
